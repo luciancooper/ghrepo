@@ -41,12 +41,12 @@ def ls(session,args):
 def get(session,args):
     if args.commit != None:
         info = session.commit_info(args.repo,args.commit)
-        session.download_commit(info,args.verify)
+        session.download_commit(info,args.format,args.verify)
         return
     commits = session.repo_commits(args.repo)
     print("{} Commits in repository '{}'".format(len(commits),args.repo),file=sys.stderr)
     for c in commits:
-        session.download_commit(c,args.verify)
+        session.download_commit(c,args.format,args.verify)
 
 def main():
     import argparse,getpass
@@ -69,6 +69,7 @@ def main():
     parser_get = subparsers.add_parser('get',parents=[base_parser], help='download commit trees from repository',description="downloads commit trees from a github repository")
     parser_get.add_argument('-c','--commit',type=str,help='Optional hash of commit to target')
     parser_get.add_argument('-v','--verify',action='store_true',help='Verify each commit before download')
+    parser_get.add_argument('-f','--format',type=str,default="%r-%d_%t_%h",help='Naming format for downloaded directory')
     parser_get.set_defaults(run=get)
 
     args = parser.parse_args()

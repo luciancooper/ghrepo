@@ -3,7 +3,7 @@
 import sys,re,os,requests
 from contextlib import closing
 from zipfile import ZipFile
-from .util import format_isotime
+from .util import format_isotime,format_commit_str
 
 def download(url,savefile,**kwargs):
     try:
@@ -75,9 +75,9 @@ class GitHubSession():
         except requests.exceptions.RequestException as e:
             print('Error during requests to {0} : {1}'.format(url, str(e)))
 
-    def download_commit(self,info,verify):
+    def download_commit(self,info,fmt,verify):
         repo,chash = info['repo'],info['hash']
-        dirname = "{}_{}".format(format_isotime(info['date']),chash[:8])
+        dirname = format_commit_str(info,fmt)
         endpath = os.path.join(os.getcwd(),dirname)
         if os.path.exists(endpath):
             print("Cannot download commit from '{}' repository, '{}' already exists in this directory".format(repo,dirname),file=sys.stderr)
