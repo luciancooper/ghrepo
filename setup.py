@@ -23,7 +23,10 @@ setup(
         'Topic :: Utilities',
     ],
     install_requires=['pydecorator'],
-    packages=[],
-    scripts=['bin/ghrepo'],
-    #entry_points={ 'console_scripts': ['ghrepo=ghrepo:main'] },
+    packages=['ghrepo'],
+    entry_points={ 
+        'console_scripts': [
+            'ghrepo = ghrepo.__main__:main',
+        ] 
+    },
 )
